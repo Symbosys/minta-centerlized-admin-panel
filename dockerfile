@@ -14,7 +14,7 @@ RUN pnpm install --frozen-lockfile
 # Copy application source
 COPY . .
 
-# Receive build args and expose them as environment variables during build
+# Receive build args from docker-compose.yml and expose them as environment variables during build
 ARG VITE_FRESH_API_URL
 ARG VITE_RESTRO_API_URL
 ENV VITE_FRESH_API_URL=${VITE_FRESH_API_URL}
