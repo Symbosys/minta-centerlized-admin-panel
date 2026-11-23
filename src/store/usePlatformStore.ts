@@ -48,7 +48,7 @@ export const PLATFORMS: Record<PlatformId, PlatformConfig> = {
     name: "Minta Fresh",
     shortName: "Fresh",
     tagline: "Grocery & FMCG Deliveries",
-    apiUrl: import.meta.env.VITE_FRESH_API_URL,
+    apiUrl: import.meta.env.VITE_FRESH_API_URL || "https://api.mintafresh.com/api/v1/minta-fresh",
     badgeVariant: "default",
     theme: {
       brandColor: "hsl(276 76% 44%)", // Minta Purple
@@ -92,7 +92,7 @@ export const PLATFORMS: Record<PlatformId, PlatformConfig> = {
     name: "Minta Restro",
     shortName: "Restro",
     tagline: "Multi-Mode Food & Restaurant Services",
-    apiUrl: import.meta.env.VITE_RESTRO_API_URL,
+    apiUrl: import.meta.env.VITE_RESTRO_API_URL || "https://api.mintarestro.com/api/v1/minta-restro",
     badgeVariant: "secondary",
     theme: {
       brandColor: "hsl(24 95% 48%)", // Warm Orange / Culinary Amber

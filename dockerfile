@@ -20,8 +20,6 @@ ARG VITE_RESTRO_API_URL
 ENV VITE_FRESH_API_URL=${VITE_FRESH_API_URL}
 ENV VITE_RESTRO_API_URL=${VITE_RESTRO_API_URL}
 
-# Ensure any local .env file does not override the build arguments
-RUN rm -f .env .env.local
 
 # Build production bundle
 RUN pnpm run build
