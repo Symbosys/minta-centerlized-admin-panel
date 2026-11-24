@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -60,11 +61,21 @@ import { format } from "date-fns";
 
 export default function VendorSubscriptions() {
   // --- Filter & Pagination States ---
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(urlSearch);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [typeFilter, setTypeFilter] = useState<string>("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
+
+  useEffect(() => {
+    const q = searchParams.get("search");
+    if (q !== null && q !== searchTerm) {
+      setSearchTerm(q);
+      setCurrentPage(1);
+    }
+  }, [searchParams]);
 
   // --- Modal Edit State ---
   const [editingRecord, setEditingRecord] = useState<VendorSubscriptionRecord | null>(null);

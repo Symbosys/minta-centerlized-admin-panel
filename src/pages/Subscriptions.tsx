@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -76,9 +77,18 @@ export default function Subscriptions() {
   });
 
   // --- Filter & Search States ---
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(urlSearch);
   const [typeFilter, setTypeFilter] = useState<string>("ALL");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
+
+  useEffect(() => {
+    const q = searchParams.get("search");
+    if (q !== null && q !== searchTerm) {
+      setSearchTerm(q);
+    }
+  }, [searchParams]);
 
   // --- Query & Mutations ---
   const {

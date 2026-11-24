@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -125,7 +126,18 @@ export default function Products() {
   const { platform } = usePlatform();
   const isRestro = platform === "restro";
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search") || "";
+  const [searchQuery, setSearchQuery] = useState(urlSearch);
+
+  // Sync with search parameter (e.g. from Navbar global search)
+  useEffect(() => {
+    const q = searchParams.get("search");
+    if (q !== null && q !== searchQuery) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
+
   const [selectedModeFilter, setSelectedModeFilter] = useState<string>("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);

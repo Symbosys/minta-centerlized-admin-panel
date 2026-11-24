@@ -19,13 +19,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search, Eye, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetAllOrdersAdmin } from "@/api/hooks/order/order.hook";
 import { parseToDecimal } from "@/utils/util";
 
 const Orders = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [searchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(urlSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(urlSearch);
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>("all");
   const [paymentStatusFilter, setPaymentStatusFilter] = useState<string>("all");
   const [dateFilter, setDateFilter] = useState<string>("all");
@@ -34,6 +36,16 @@ const Orders = () => {
   const itemsPerPage = 10;
 
   const navigate = useNavigate();
+
+  // Sync search param when changed externally (e.g. from Navbar global search)
+  useEffect(() => {
+    const q = searchParams.get("search");
+    if (q !== null && q !== searchTerm) {
+      setSearchTerm(q);
+      setDebouncedSearch(q);
+      setCurrentPage(1);
+    }
+  }, [searchParams]);
 
   // Debounce search query
   useEffect(() => {

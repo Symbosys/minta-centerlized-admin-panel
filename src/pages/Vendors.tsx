@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetAllVendors, useUpdateVendorStatus } from "@/api/hooks/vendor/vendor.hook";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -28,14 +28,25 @@ import { parseToDecimal } from "@/utils/util";
 
 const Vendors = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [searchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(urlSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(urlSearch);
 
   const [actionType, setActionType] = useState<"APPROVED" | "REJECTED" | "BLOCKED" | null>(null);
   const [selectedVendor, setSelectedVendor] = useState<any | null>(null);
   const [reason, setReason] = useState("");
 
   const updateStatusMutation = useUpdateVendorStatus();
+
+  // Sync with search parameter (e.g. from Navbar global search)
+  useEffect(() => {
+    const q = searchParams.get("search");
+    if (q !== null && q !== searchTerm) {
+      setSearchTerm(q);
+      setDebouncedSearch(q);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
