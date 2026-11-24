@@ -66,20 +66,17 @@ const baseMenuItems: MenuItem[] = [
     permission: "VIEW_VENDORS",
     requiredRole: "ADMIN",
   },
-  // FRESH ONLY
   {
     title: "Manage Subscriptions",
     icon: CreditCard,
     path: "/subscriptions",
     permission: "VIEW_VENDORS",
-    platform: "minta-fresh",
   },
   {
     title: "Vendor Subscriptions",
     icon: Receipt,
     path: "/vendor-subscriptions",
     permission: "VIEW_VENDORS",
-    platform: "minta-fresh",
   },
   // RESTRO ONLY
   {
